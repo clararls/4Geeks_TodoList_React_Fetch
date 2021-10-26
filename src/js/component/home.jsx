@@ -1,24 +1,16 @@
-import React from "react";
-
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+import React, { useState } from "react";
+import Task from "./task.jsx";
 
 //create your first component
 const Home = () => {
+	const [taskList, setTaskList] = useState(["comer", "cocinar", "beber"]);
 	return (
-		<div className="text-center mt-5">
-			<h1>Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+		<div className="d-flex justify-content-center flex-column">
+			<h1 className="text-center mt-5">TODOLIST</h1>
+			<input type="text" className="mx-auto text-info w-50 p-3" />
+			{taskList.map((item, i) => {
+				return <Task key={i} content={item} />;
+			})}
 		</div>
 	);
 };
