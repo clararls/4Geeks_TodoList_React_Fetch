@@ -5,27 +5,46 @@ import Task from "./task.jsx";
 const Home = () => {
 	const [taskList, setTaskList] = useState([]);
 
-	//const deleteElement = index => {
-	//	props.setTaskList(props.taskList.filter((item, i) => i !== index));
-	//};
+	const deleteElement = i => {
+		setTaskList(taskList.filter((item, index) => index !== i));
+	};
+	const textInput = React.useRef();
+
+	const clearInput = () => (textInput.current.value = "");
 
 	return (
-		<div className="d-flex justify-content-center flex-column">
-			<h1 className="text-center mt-5">TODOLIST</h1>
+		<div className="d-flex flex-column container w-50 p-3">
+			<h1 className="row">TODOLIST</h1>
 			<input
 				type="text"
-				className="mx-auto text-info w-50 p-3"
+				ref={textInput}
+				className="row d-flex text-info w-50 p-3"
+				placeholder="What needs to be done?"
 				onKeyDown={event => {
 					if (event.key === "Enter") {
 						setTaskList([...taskList, event.target.value]);
+						clearInput();
 					}
 				}}
 			/>
-
-			{taskList.map((item, i) => {
-				return <Task key={i} content={item} />;
-			})}
-			<p className="text-center mt-5">{taskList.length} items left</p>
+			<div className="row d-flex w-50 p-3">
+				{taskList.map((item, i) => {
+					return <Task key={i} content={item} />;
+				})}
+				{taskList.map((item, i) => {
+					return (
+						<button
+							key={i}
+							className="btn btn-danger col-sm-1"
+							onClick={() => deleteElement(i)}>
+							x
+						</button>
+					);
+				})}
+			</div>
+			<p className="row text-muted text-center mt-5">
+				{taskList.length} items left
+			</p>
 		</div>
 	);
 };
