@@ -12,16 +12,6 @@ const Home = () => {
 
 	const clearInput = () => (textInput.current.value = "");
 
-	const taskRepeated = newTask => {
-		let repeated = false;
-		taskList.forEach(task => {
-			if (task.label === newTask) {
-				repeated = true;
-			}
-		});
-		return repeated;
-	};
-
 	return (
 		<div className="d-flex flex-column container">
 			<h1 className="row">TODOLIST</h1>
@@ -32,11 +22,11 @@ const Home = () => {
 				placeholder="What needs to be done?"
 				onKeyDown={event => {
 					if (event.key === "Enter" && event.target.value !== "") {
-						if (taskRepeated(taskList)) {
-							alert("You can´t insert the same task twice");
-						} else {
+						if (taskList.indexOf(event.target.value) == -1) {
 							setTaskList([...taskList, event.target.value]);
 							clearInput();
+						} else {
+							alert("The task is on the list!!");
 						}
 					}
 				}}
