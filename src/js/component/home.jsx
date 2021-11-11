@@ -1,9 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Task from "./task.jsx";
 
 //create your first component
 const Home = () => {
 	const [taskList, setTaskList] = useState([]);
+
+	useEffect(() => {
+		fetch(
+			"https://assets.breatheco.de/apis/fake/todos/user/clararls96",
+			{
+				method: "PUT",
+				headers: { "Content-Type": "application/json" }
+			},
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				}
+			}
+		)
+			.then(resp => {
+				console.log(resp.ok); // will be true if the response is successfull
+				console.log(resp.status); // the status code = 200 or code = 400 etc.
+				return resp.json();
+			})
+			.then(data => {
+				setTaskList(data);
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	}, []);
 
 	const deleteElement = i => {
 		setTaskList(taskList.filter((item, index) => index !== i));
