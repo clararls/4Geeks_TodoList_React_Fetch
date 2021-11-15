@@ -6,26 +6,17 @@ const Home = () => {
 	const [taskList, setTaskList] = useState([]);
 
 	useEffect(() => {
-		fetch(
-			"https://assets.breatheco.de/apis/fake/todos/user/clararls96",
-			{
-				method: "PUT",
-				headers: { "Content-Type": "application/json" }
-			},
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json"
-				}
-			}
-		)
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/alesanchezr", {
+			method: "GET"
+			//headers: { Accept: "application/json" }
+		})
 			.then(resp => {
-				console.log(resp.ok); // will be true if the response is successfull
-				console.log(resp.status); // the status code = 200 or code = 400 etc.
+				console.log("ok?:", resp.ok); // will be true if the response is successfull
+				console.log("status?:", resp.status); // the status code = 200 or code = 400 etc.
 				return resp.json();
 			})
 			.then(data => {
-				setTaskList(data);
+				setTaskList("data?:", data);
 			})
 			.catch(error => {
 				console.log(error);
