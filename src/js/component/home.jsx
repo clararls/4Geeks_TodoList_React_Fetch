@@ -6,9 +6,8 @@ const Home = () => {
 	const [taskList, setTaskList] = useState([]);
 
 	useEffect(() => {
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/alesanchezr", {
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/clararls", {
 			method: "GET"
-			//headers: { Accept: "application/json" }
 		})
 			.then(resp => {
 				console.log("ok?:", resp.ok); // will be true if the response is successfull
@@ -16,12 +15,20 @@ const Home = () => {
 				return resp.json();
 			})
 			.then(data => {
-				setTaskList("data?:", data);
+				setTaskList(data);
 			})
 			.catch(error => {
 				console.log(error);
 			});
 	}, []);
+
+	useEffect(() => {
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/clararls", {
+			method: "PUT",
+			body: JSON.stringify(taskList),
+			headers: { "Content-Type": "application/json" }
+		});
+	}, [taskList]);
 
 	const deleteElement = i => {
 		setTaskList(taskList.filter((item, index) => index !== i));
@@ -41,7 +48,10 @@ const Home = () => {
 				onKeyDown={event => {
 					if (event.key === "Enter" && event.target.value !== "") {
 						if (taskList.indexOf(event.target.value) == -1) {
-							setTaskList([...taskList, event.target.value]);
+							setTaskList([
+								...taskList,
+								{ label: event.target.value, done: false }
+							]);
 							clearInput();
 						} else {
 							alert("The task is on the list!!");
@@ -52,15 +62,14 @@ const Home = () => {
 			<div className="row d-flex">
 				{taskList.map((item, i) => {
 					return (
-						<>
-							<Task key={i} content={item} />
+						<div key={i} className="d-flex justify-content-between">
+							<Task content={item.label} />
 							<button
-								key={i}
 								className="btn btn-danger col-sm-1"
 								onClick={() => deleteElement(i)}>
 								x
 							</button>
-						</>
+						</div>
 					);
 				})}
 			</div>
